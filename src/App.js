@@ -13,37 +13,40 @@ function App() {
 
   const handleButtonClick = () => setPage(page + 1);
 
-  useEffect(() => {
-    setEntity('planets');
-    const url = `${baseUrl}/${entity}/?page=${page}`;
-    console.log(url)
-    setLoading(true)
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(
-            `Something went wrong, status ${response.status}`
-          )
-        }
-        const data = await response.json();
-        console.log(data);
-        setPlanets(pl => [...pl, ...data.results]);
-      } catch (error) {
-        setError(error.message);
-        console.error(error.message)
+  const fetchData = async () => {
+    try {
+      setEntity('planets');
+      const url = `${baseUrl}/${entity}/?page=${page}`;
+      console.log(url)
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Something went wrong, status ${response.status}`
+        )
       }
+      const data = await response.json();
+      setPlanets(pl => [...pl, ...data.results]);
+      console.log('IN USEEFFECT')
+      console.log(planets);
+    } catch (error) {
+      setError(error.message);
+      console.error(error.message)
     }
-    setLoading(false)
+  }
+
+  useEffect(() => {
+    setLoading(true)
     fetchData();
+    setLoading(false)
   }, [entity, page])
 
   // <Planets planets={planets} />
-  console.log(planets)
   return (
     <section className="container py-5">
       <Header />
       <div className="row">
+        {console.log("PLANETES")}
+        {console.log(planets)}
         {planets.map((planet) => {
           return (
             <div key={planet.name} className="col-md-6  col-lg-4 col-xl-3 mb-4">
@@ -65,7 +68,7 @@ function App() {
       </div>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-      <button type="button" className="btn btn-dark" onClick={() => handleButtonClick()}>Suivantes</button>
+      <button type="button" className="btn btn-dark" onClick={handleButtonClick}>Suivantes</button>
     </section>
   );
 }
