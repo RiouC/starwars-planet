@@ -13,30 +13,31 @@ function App() {
 
   const handleButtonClick = () => setPage(page + 1);
 
-  const fetchData = async () => {
-    try {
-      setEntity('planets');
-      const url = `${baseUrl}/${entity}/?page=${page}`;
-      console.log(url)
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(
-          `Something went wrong, status ${response.status}`
-        )
-      }
-      const data = await response.json();
-      setPlanets(pl => [...pl, ...data.results]);
-      console.log('IN USEEFFECT')
-      console.log(planets);
-    } catch (error) {
-      setError(error.message);
-      console.error(error.message)
-    }
-  }
+
 
   useEffect(() => {
     setLoading(true)
+
+    const fetchData = async () => {
+      try {
+        setEntity('planets');
+        const url = `${baseUrl}/${entity}/?page=${page}`;
+        console.log(url)
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(
+            `Something went wrong, status ${response.status}`
+          )
+        }
+        const data = await response.json();
+        setPlanets(pl => [...pl, ...data.results]);
+      } catch (error) {
+        setError(error.message);
+        console.error(error.message)
+      }
+    }
     fetchData();
+
     setLoading(false)
   }, [entity, page])
 
@@ -45,8 +46,6 @@ function App() {
     <section className="container py-5">
       <Header />
       <div className="row">
-        {console.log("PLANETES")}
-        {console.log(planets)}
         {planets.map((planet) => {
           return (
             <div key={planet.name} className="col-md-6  col-lg-4 col-xl-3 mb-4">
@@ -66,7 +65,6 @@ function App() {
           <div className="mb-4 text-center p-3">loading...</div>
         )}
       </div>
-      {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       <button type="button" className="btn btn-dark" onClick={handleButtonClick}>Suivantes</button>
     </section>
