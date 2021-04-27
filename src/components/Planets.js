@@ -1,12 +1,9 @@
 import Planet from './Planet';
 
-const Planets = () => {
+const Planets = ({ planets }) => {
     return <div className="row">
-        <Planet />
-        <Planet />
-        <Planet />
-        <Planet />
-        <Planet />
+        console.log(`PLANETES : ${planets}`)
+        {planets.map((pl) => <Planet key={pl.name} planet={pl} />)};
     </div>
 }
 
