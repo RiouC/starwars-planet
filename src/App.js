@@ -4,7 +4,7 @@ import Header from './components/Header';
 // import Planets from './components/Planets';
 
 function App() {
-  const baseUrl = 'http://swapi.dev/api';
+  const baseUrl = 'https://swapi.dev/api';
   const [entity, setEntity] = useState('planets');
   const [planets, setPlanets] = useState([]);
   const [page, setPage] = useState(1);
